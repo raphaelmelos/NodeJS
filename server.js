@@ -13,24 +13,41 @@ const database  = new DatabaseMemory()
 // Route Parameter
 
 server.post('/videos', (request, reply) => {
-    database.create({
-     title: 'Video 01',
-     descripition: 'Esse é o vídeo 01',
-     duration: 180,
+    const { title, descripition, duration } = request.body
+    
+    
+     database.create({
+     title,
+     descripition,
+     duration,
     })
 
-    console.log(database.list())
+    console.log(database.list()) 
+
 
     return reply.status(201).send()
 })
  
 
 server.get('/videos', () =>{
-     return 'Hello rocketseat'
+     const videos = database.list()
+
+     console.log(videos)
+
+     return videos
 })
 
 server.put('/videos:id', () =>{
-     return 'Hello node'
+     const videoId = request.params.id
+     const { title, descripition, duration } = request.body
+
+     database.update(videoId, {
+          title,
+          descripition,
+          duration,
+       
+     })
+     return reply.status(204).send()
 })
 
 server.delete('/videos/:id', () =>{
